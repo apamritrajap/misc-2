@@ -4,7 +4,7 @@ $email_array = explode(',',$_POST['selected']);
 		foreach($email_array as $e_address){	
 			$to = $e_address;
 			$subject = "LawnService Admin Password";
-			$message = $_POST['message'];
+			$message = $_POST['markupStr'];
 			$headers = "From : codebridgeinc.com";
 			echo $to.','.$subject.','.$message.','.$headers.'<br>';
 		}

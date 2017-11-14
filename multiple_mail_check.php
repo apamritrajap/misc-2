@@ -93,8 +93,9 @@ include_once 'header.php';
                         <input type="email" class="form-control" id="inputEmail" placeholder="Enter your email"/>
                     </div> -->
                     <div class="form-group">
-                        <label for="inputMessage">Message</label>
-                        <textarea class="form-control" id="inputMessage" placeholder="Enter your message"></textarea>
+                        <!-- <label for="inputMessage">Message</label>
+                        <textarea class="form-control" id="inputMessage" placeholder="Enter your message"></textarea> -->
+						<div id="summernote"><p>Hello Summernote</p></div>
                     </div>
                 </form>
             </div>
@@ -107,9 +108,32 @@ include_once 'header.php';
         </div>
     </div>
 </div>
+<div id="check"></div>
 			 </section>
 			 </section>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>		 
+			 <!--
+<link href="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/css/bootstrap.css" rel="stylesheet">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.js"></script> 
+  <script src="http://netdna.bootstrapcdn.com/bootstrap/3.3.5/js/bootstrap.js"></script> 
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">
+  <script src="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.js"></script>
+			 -->
+	<script src="editor/summer_bootstr.js"></script>		
+  <link href="http://cdnjs.cloudflare.com/ajax/libs/summernote/0.8.8/summernote.css" rel="stylesheet">
+  <script src="editor/summer.js"></script>
+<script>
+$(document).ready(function() {
+        
+$('#summernote').summernote({
+  height: 300,                 // set editor height
+  minHeight: null,             // set minimum height of editor
+  maxHeight: null,             // set maximum height of editor
+  focus: true                  // set focus to editable area after initializing summernote
+});
+
+
+});
+  </script>  
 <script>
 $(document).ready(function() {//alert('hello');
     $('#selectall').on('click',function(){
@@ -139,13 +163,10 @@ $(document).ready(function() {//alert('hello');
 			}
 		});
 //get value class checked
-	$("#send_mail").click(function() {
-		var message = $('#inputMessage').val();//cus
-		if($.trim(message) == ''){
-			alert("Please type some custom message  !!!");
-			return false;
-		}
-	    var chkArray = [];
+$('#send_mail').on('click', function(){
+	var markupStr = $('#summernote').summernote('code');
+	alert(markupStr);
+		    var chkArray = [];
 		
 		/* look for all checkboes that have a class 'case' attached to it and check if it was checked */
 		$(".case:checked").each(function() {
@@ -155,23 +176,25 @@ $(document).ready(function() {//alert('hello');
 		/* we join the array separated by the comma */
 		var selected;
 		selected = chkArray.join(',') ;
-		var message = $('#inputMessage').val();
+		
 		
 		/* check if there is selected checkboxes, by default the length is 1 as it contains one single comma */
-		if(selected.length > 1){
-			//alert("You have selected " + selected);	
-			$.ajax({
+	if(selected.length > 1){
+		$.ajax({
 			  method: "POST",
 			  url: "send_mail.php",
-			  data: { selected,message }
+			  data: { markupStr,selected }
 			})
 			  .done(function( msg ) {
-				alert( msg );
+				//console.log( msg );
+				$('#check').html(msg);
 			  });
-		}else{
+	}else{
 			alert("Please at least one of the checkbox");	
-		}
-	});
+		}	  
+
+});		
+
 	
 });	
 </script>			 
