@@ -1,10 +1,7 @@
 <?php
 session_start();
 include_once("../includes/constants.php");
-//include_once(APP_GEN_FUNCTION_PATH ."GeneralFunction.php");
-//$objGeneralFunction = new GeneralFunctions(); 
-//echo 'hi';
-//monthly
+//change = 169 / 234/ 224
 	$conn = new mysqli('localhost','root','','db_accounting');
 	$sql = "select * from admin";
 	$data = [];
@@ -13,7 +10,7 @@ include_once("../includes/constants.php");
 			$data[] = $fetch;
 		}
 		
-	//echo "<pre>";print_r($helloMail);die;
+	//echo "<pre>";print_r($data);die;
 include_once 'header.php';	
 ?>
 <!--main content start-->
@@ -36,29 +33,29 @@ include_once 'header.php';
                               Advanced Table
                           </header>
                           
-                          <table class="table table-striped table-advance table-hover">
+                          <table class="table table-striped table-advance table-hover" id="table_id">
                            <tbody>
                               <tr>
-                                 <th><i class="icon_profile"></i><input type="checkbox" class="select_all" id="selectall"></th>
+                                 <th><i class="icon_profile"></i><input type="checkbox" class="select_all both_class" id="selectall"></th>
                                  <th><i class="icon_calendar"></i> Date</th>
                                  <th><i class="icon_mail_alt"></i> Email</th>
                                  <th><i class="icon_pin_alt"></i> City</th>
-                                 <th><i class="icon_mobile"></i> Mobile</th>
-                                 <th><i class="icon_cogs"></i><button class="btn btn-primary" id="send_send"  data-toggle="modal" data-target="#modalForm">Send</button></th>
+                                 <th><i class="icon_mobile"></i> contact</th>
+                                 <th>
+									<i class="icon_cogs"></i><button class="btn btn-primary btn_sub" id="send_send"  data-toggle="modal" data-target="#modalForm" disabled>Send</button>
+								 
+									<i class="icon_cogs"></i><button class="btn btn-primary btn_sub" id="send_msg"  data-toggle="modal" data-target="#modalFormMsg" disabled>message</button>
+								</th>
                               </tr>
 							  <?php
 								foreach($data as $users){
 							  ?>
                               <tr>
-                                 <td><input value="<?php echo $users['email']; ?>" type="checkbox" class="single_select case"></td>
+                                 <td><input value="<?php echo $users['email']; ?>" type="checkbox" class="single_select case both_class"></td>
                                  <td><?php echo $users['id']; ?></td>
                                  <td><?php echo $users['username']; ?></td>
-                                 <td><?php echo $users['email']; ?></td>
-                                 <td>
-                                  <div class="btn-group">
-                                      <a class="btn btn-primary" href="#"><i class="icon_plus_alt2"></i></a>
-                                  </div>
-                                  </td>
+                                 <td class="subject"><?php echo $users['email']; ?></td>
+                                 <td class="subject_con"><?php echo $users['contact']; ?></td>
                               </tr>
 								<?php } ?>
                                                             
@@ -68,7 +65,7 @@ include_once 'header.php';
                   </div>
               </div>
 <!-- modal -->
-				<div class="modal fade" id="modalForm" role="dialog">
+<div class="modal fade" id="modalForm" role="dialog">
     <div class="modal-dialog">
         <div class="modal-content">
             <!-- Modal Header -->
@@ -84,17 +81,11 @@ include_once 'header.php';
             <div class="modal-body">
                 <p class="statusMsg"></p>
                 <form role="form">
-<!--                     <div class="form-group">
-                        <label for="inputName">Name</label>
-                        <input type="text" class="form-control" id="inputName" placeholder="Enter your name"/>
-                    </div>
+					<div class="form-group">
+                        <label for="inputName">Subject</label>
+                        <input type="text" class="form-control" id="inputName" placeholder="Subject"/>
+                    </div>                  
                     <div class="form-group">
-                        <label for="inputEmail">Email</label>
-                        <input type="email" class="form-control" id="inputEmail" placeholder="Enter your email"/>
-                    </div> -->
-                    <div class="form-group">
-                        <!-- <label for="inputMessage">Message</label>
-                        <textarea class="form-control" id="inputMessage" placeholder="Enter your message"></textarea> -->
 						<div id="summernote"><p>Hello Summernote</p></div>
                     </div>
                 </form>
@@ -104,6 +95,48 @@ include_once 'header.php';
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary submitBtn" id="send_mail">SUBMIT</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- modal modal msg -->
+<div class="modal fade" id="modalFormMsg" role="dialog">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <!-- Modal Header -->
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">
+                    <span aria-hidden="true">&times;</span>
+                    <span class="sr-only">Close</span>
+                </button>
+                <h4 class="modal-title" id="myModalLabel">Message For Users</h4>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="modal-body">
+                <p class="statusMsg"></p>
+                <form role="form">
+<!--                     <div class="form-group">
+                        <label for="inputName">Name</label>
+                        <input type="text" class="form-control" id="inputName" placeholder="Enter your name"/>
+                    </div>
+                    <div class="form-group">
+                        <label for="inputEmail">Email</label>
+                        <input type="email" class="form-control" id="inputEmail" placeholder="Enter your email"/>
+                    </div> -->
+                    <div class="form-group">
+                        <label for="inputMessage">Message</label>
+                        <textarea class="form-control" id="inputMessage" placeholder="Enter your message"></textarea>
+						<!-- <div id="summernote"><p>Hello Summernote</p></div> -->
+                    </div>
+                </form>
+            </div>
+            
+            <!-- Modal Footer -->
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
+                <button type="button" class="btn btn-primary submitBtn" id="send_msg_msg">SUBMIT</button>
             </div>
         </div>
     </div>
@@ -132,7 +165,15 @@ $('#summernote').summernote({
 });
 
 
-});
+});		
+/* if ($('.both_class:checked')) {
+    $("#send_send").removeAttr("disabled");
+    $("#send_msg").removeAttr("disabled");
+  } else {
+    $("#send_msg").attr("disabled", true);
+    $("#send_send").attr("disabled", true);
+  }
+}); */
   </script>  
 <script>
 $(document).ready(function() {//alert('hello');
@@ -156,34 +197,38 @@ $(document).ready(function() {//alert('hello');
         }
     });
 //send mail button on click
-		$("#send_send").click(function() {
+		/* $("#send_send").click(function() {
 			if($('input:checkbox:checked').length < 1){
 				alert("Please at least one of the checkbox");
 				return false;
 			}
-		});
+		}); */
 //get value class checked
 $('#send_mail').on('click', function(){
 	var markupStr = $('#summernote').summernote('code');
+	var subject = $('#inputName').val();
+	
 	alert(markupStr);
 		    var chkArray = [];
 		
 		/* look for all checkboes that have a class 'case' attached to it and check if it was checked */
 		$(".case:checked").each(function() {
-			chkArray.push($(this).val());
+			//chkArray.push($(this).val());  //change here
+			var findtd = $(this).closest('tr').find('.subject').text();
+			chkArray.push($.trim(findtd));
 		});
 		
 		/* we join the array separated by the comma */
 		var selected;
 		selected = chkArray.join(',') ;
 		
-		
+		alert(selected);
 		/* check if there is selected checkboxes, by default the length is 1 as it contains one single comma */
 	if(selected.length > 1){
 		$.ajax({
 			  method: "POST",
 			  url: "send_mail.php",
-			  data: { markupStr,selected }
+			  data: { markupStr,selected,subject }
 			})
 			  .done(function( msg ) {
 				//console.log( msg );
@@ -194,6 +239,35 @@ $('#send_mail').on('click', function(){
 		}	  
 
 });		
+// message
+
+$('#send_msg_msg').on('click', function(){
+	var markupStr = $('#inputMessage').val();
+	var chkArray = [];
+	$(".case:checked").each(function() {
+		//chkArray.push($(this).val());  //change here
+		var findtd = $(this).closest('tr').find('.subject_con').text();
+		chkArray.push($.trim(findtd));
+	});	
+		
+	var selected;
+	selected = chkArray.join(',') ;
+	if(selected.length > 1){
+		$.ajax({
+			  method: "POST",
+			  url: "send_message.php",
+			  data: { markupStr,selected }
+			})
+			  .done(function( msg ) {
+				//console.log( msg );
+				$('#check').html(msg);
+			  });
+	}else{
+			alert("Please at least one of the checkbox");	
+		}
+
+});		
+
 
 	
 });	
